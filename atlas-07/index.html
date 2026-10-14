@@ -47,6 +47,59 @@ footer{z-index:3;display:flex;justify-content:space-between;gap:20px;padding:0 2
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js"}}</script>
+
+<style>
+/* ATLAS-07 two-source comparison layout */
+#stage{inset:0 auto 0 0!important;width:59%!important;right:auto!important}
+.hud-right{display:none!important}
+.source-label{position:absolute;left:28px;bottom:23px;display:flex;align-items:center;gap:8px;z-index:3;color:#7e9aa8;font-size:9px;letter-spacing:.14em;pointer-events:none}
+.source-dot{width:6px;height:6px;background:#55e8ff;border-radius:50%;box-shadow:0 0 12px #55e8ff}
+#mcpPanel{position:absolute;z-index:5;top:5.5%;right:2.4%;bottom:76px;width:36.8%;min-width:310px;display:flex;flex-direction:column;gap:12px;padding:18px;border:1px solid rgba(137,195,218,.23);border-radius:18px;background:linear-gradient(160deg,rgba(15,28,38,.94),rgba(5,12,18,.91));box-shadow:0 24px 85px rgba(0,0,0,.38);backdrop-filter:blur(22px);overflow:auto}
+.mcp-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mcp-kicker{font-size:9px;letter-spacing:.18em;color:#6e8c9d;text-transform:uppercase}
+.mcp-head h2{font-size:25px;letter-spacing:-.04em;margin:5px 0 0;font-weight:800}
+.mcp-state{font-size:9px;color:#ffcc8c;border:1px solid #ffbd7040;background:#ffbd7010;border-radius:7px;padding:7px 8px;white-space:nowrap;letter-spacing:.06em}
+#mcpModelStage{position:relative;min-height:240px;flex:1;border:1px solid rgba(96,196,224,.14);border-radius:13px;overflow:hidden;background:radial-gradient(ellipse at 50% 46%,#17303b 0%,#0b141b 56%,#080e14 100%)}
+#mcpViewer{width:100%;height:100%;min-height:270px;--poster-color:transparent;--progress-bar-color:#55e8ff;--progress-mask:transparent}
+#mcpPlaceholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(18px,2.2vw,32px)}
+.placeholder-icon{width:55px;height:55px;display:grid;grid-template-columns:1fr 1fr;gap:4px;transform:rotate(45deg);margin:0 0 24px 8px}
+.placeholder-icon span{border:1px solid #59dff5a1;background:#38c9ed0b;box-shadow:inset 0 0 15px #24c5ee12}
+.placeholder-status{font-size:9px;letter-spacing:.19em;color:#ffbf79;font-weight:800}
+#mcpPlaceholder h3{font-size:clamp(19px,2.2vw,29px);letter-spacing:-.045em;line-height:1.04;margin:12px 0;max-width:350px}
+#mcpPlaceholder p{font-size:12px;line-height:1.65;color:#8ea6b5;max-width:390px;margin:0 0 16px}
+#mcpReceipt{color:#70e7fa;font-size:11px;text-decoration:none;border-bottom:1px solid #70e7fa42;padding-bottom:3px}
+.mcp-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mcp-actions button{font-size:11px}
+.mcp-actions a{color:#70e7fa;font-size:11px;text-decoration:none}
+.manual-load{border-top:1px solid var(--line);padding-top:11px;display:grid;gap:8px}
+.manual-load label{font-size:9px;letter-spacing:.15em;color:#708b9b}
+.url-row{display:flex;gap:6px}
+.url-row input{min-width:0;flex:1;background:#081119;border:1px solid #8db6c52c;color:#e4f4fb;border-radius:8px;padding:10px;font-size:11px;outline:none}
+.url-row input:focus{border-color:#55e8ff88}
+.url-row button{padding:9px 12px}
+.mcp-footer{margin-top:auto;display:flex;justify-content:space-between;gap:8px;color:#4f6878;font-size:8px;letter-spacing:.13em;padding-top:4px}
+button:disabled{opacity:.6;cursor:wait}
+@media(max-width:800px){
+  #stage{width:100%!important}
+  .source-label{display:none}
+  #mcpPanel{top:auto;left:12px;right:12px;bottom:75px;width:auto;min-width:0;height:32vh;min-height:210px;max-height:300px;padding:11px;gap:8px;border-radius:13px}
+  .mcp-head h2{font-size:18px}.mcp-kicker{font-size:8px}.mcp-state{font-size:8px;padding:6px}
+  #mcpModelStage{min-height:0;flex:1}
+  #mcpViewer{min-height:110px}
+  #mcpPlaceholder{padding:12px}
+  .placeholder-icon{width:25px;height:25px;margin:0 0 8px 4px;gap:2px}
+  .placeholder-status{font-size:8px}
+  #mcpPlaceholder h3{font-size:16px;margin:6px 0}
+  #mcpPlaceholder p{font-size:10px;line-height:1.35;margin:0 0 7px}
+  #mcpReceipt{font-size:10px}
+  .manual-load{display:none}
+  .mcp-footer{display:none}
+  .mcp-actions{gap:6px}
+  .mcp-actions button{padding:7px 9px;font-size:10px}
+}
+</style>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.1.0/dist/model-viewer.min.js"></script>
+
 </head>
 <body>
 <div id="app">
@@ -55,7 +108,7 @@ footer{z-index:3;display:flex;justify-content:space-between;gap:20px;padding:0 2
   <div class="top-right"><span class="live-dot"></span><span>Real-time 3D viewport</span></div>
 </header>
 <main>
-  <div id="stage" aria-label="Döndürülebilir üç boyutlu robot modeli"></div>
+  <div id="stage" aria-label="Döndürülebilir üç boyutlu robot modeli"></div><div class="source-label"><span class="source-dot"></span><span>01 / OPENAI CONCEPT · PROCEDURAL 3D</span></div>
   <section class="hud-left">
     <div class="eyebrow">Prototype 07 · Online</div>
     <h1>ATLAS<span>— 07</span></h1>
@@ -74,6 +127,33 @@ footer{z-index:3;display:flex;justify-content:space-between;gap:20px;padding:0 2
     <button id="lightBtn" class="optional" aria-pressed="true" title="Işık efektlerini değiştir">✦ Işık</button>
     <button id="shotBtn" class="primary" title="Ekran görüntüsünü PNG olarak kaydet">↧ PNG al</button>
   </div>
+
+  <section id="mcpPanel" aria-label="MCP model karşılaştırması">
+    <div class="mcp-head">
+      <div><div class="mcp-kicker">MODEL COMPARISON / 02</div><h2>MCP OUTPUT</h2></div>
+      <span id="mcpState" class="mcp-state">503 · NOT_CONFIGURED</span>
+    </div>
+    <div id="mcpModelStage">
+      <model-viewer id="mcpViewer" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" environment-image="neutral" interaction-prompt="none" alt="three.ws MCP tarafından üretilen ATLAS-07 modeli" style="display:none"></model-viewer>
+      <div id="mcpPlaceholder">
+        <div class="placeholder-icon"><span></span><span></span><span></span><span></span></div>
+        <div class="placeholder-status">MODEL NOT DELIVERED</div>
+        <h3>MCP üretimi şu an kullanılamıyor</h3>
+        <p id="mcpMessage">Canlı REST çağrısı HTTP 503 · not_configured döndürdü. MCP uç noktası yanıt veriyor, ancak bu deployment’da üretici yapılandırılmamış.</p>
+        <a id="mcpReceipt" href="https://three.ws/runs/rr_UvSTGcufNas4s5B4HefjsQ" target="_blank" rel="noopener noreferrer">MCP çalışma raporunu aç ↗</a>
+      </div>
+    </div>
+    <div class="mcp-actions">
+      <button id="mcpRetry" class="primary">↻ MCP ile tekrar dene</button>
+      <a id="mcpOpen" href="https://three.ws/viewer" target="_blank" rel="noopener noreferrer" style="display:none">MCP viewer ↗</a>
+    </div>
+    <div class="manual-load">
+      <label for="mcpUrl">ELİNDE GLB MODEL URL’Sİ VAR MI?</label>
+      <div class="url-row"><input id="mcpUrl" type="url" placeholder="https://.../model.glb" autocomplete="url"><button id="mcpLoad">Yükle</button></div>
+    </div>
+    <div class="mcp-footer"><span>FORMAT / GLB</span><span>NO WALLET · NO API KEY</span></div>
+  </section>
+
   <div id="toast" role="status"></div>
   <div id="loading"><div class="loader-box"><div class="spinner"></div>INITIALIZING 3D CORE</div></div>
 </main>
@@ -237,6 +317,96 @@ document.querySelector('#rotateBtn').addEventListener('click',e=>{controls.autoR
 document.querySelector('#resetBtn').addEventListener('click',()=>{camera.position.set(6.1,4.35,8.7);controls.target.set(0,2.55,0);controls.update();robot.rotation.y=0;notify('Kamera varsayılan görünüme döndü');});
 document.querySelector('#lightBtn').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',String(on));cyanLight.intensity=on?42:0;goldLight.intensity=on?34:0;rimLight.intensity=on?2.2:.4;e.currentTarget.textContent=on?'✦ Işık':'✧ Işık';notify(on?'Işık efektleri açık':'Işık efektleri azaltıldı');});
 document.querySelector('#shotBtn').addEventListener('click',()=>{renderer.render(scene,camera);const a=document.createElement('a');a.download='ATLAS-07-render.png';a.href=renderer.domElement.toDataURL('image/png');a.click();notify('PNG ekran görüntüsü indirildi');});
+
+async function callStudio(method, params) {
+  const res = await fetch('https://three.ws/api/mcp-studio', {
+    method:'POST',
+    headers:{'content-type':'application/json','accept':'application/json, text/event-stream'},
+    body:JSON.stringify({jsonrpc:'2.0',id:Date.now(),method,params})
+  });
+  let payload;
+  try { payload = await res.json(); } catch { throw new Error('MCP sunucusu JSON olmayan bir yanıt döndürdü (HTTP '+res.status+').'); }
+  if (!res.ok) throw new Error('MCP HTTP '+res.status+': '+(payload?.error?.message || 'İstek reddedildi.'));
+  if (payload?.error) throw new Error(payload.error.message || 'JSON-RPC isteği başarısız oldu.');
+  return payload?.result;
+}
+function setMcpMessage(message, state='UNAVAILABLE') {
+  document.querySelector('#mcpState').textContent=state;
+  document.querySelector('#mcpMessage').textContent=message;
+  document.querySelector('#mcpPlaceholder').style.display='flex';
+  document.querySelector('#mcpViewer').style.display='none';
+}
+function showMcpModel(data) {
+  const url=data?.glbUrl || data?.glb_url || data?.modelUrl;
+  if(!url || !/^https:\/\//i.test(url)) return false;
+  const viewer=document.querySelector('#mcpViewer');
+  viewer.src=url;viewer.style.display='block';
+  document.querySelector('#mcpPlaceholder').style.display='none';
+  document.querySelector('#mcpState').textContent='MODEL READY';
+  const vurl=data.viewerUrl || data.viewer_url || ('https://three.ws/viewer?src='+encodeURIComponent(url));
+  const open=document.querySelector('#mcpOpen');open.href=vurl;open.style.display='inline';
+  document.querySelector('#mcpUrl').value=url;
+  return true;
+}
+document.querySelector('#mcpRetry').addEventListener('click',async()=>{
+  const btn=document.querySelector('#mcpRetry'), state=document.querySelector('#mcpState'), receipt=document.querySelector('#mcpReceipt');
+  btn.disabled=true;btn.textContent='◌ İstek gönderiliyor…';state.textContent='CONNECTING';
+  setMcpMessage('three.ws MCP sunucusuna canlı üretim isteği gönderiliyor. Model hazır olursa sağdaki görüntüleyici açılacak.','CONNECTING');
+  try {
+    const result=await callStudio('tools/call',{name:'forge_free',arguments:{
+      tier:'standard',
+      idempotency_key:'atlas07-web-'+Date.now(),
+      prompt:'ATLAS-07 full-body futuristic humanoid robot figurine, pearl-white ceramic titanium armor, graphite-black exposed mechanical joints, cyan luminous strips, amber optical eyes, articulated hands and feet, realistic premium sci-fi industrial design, upright neutral pose, single centered character, no text, no weapons.'
+    }});
+    const data=result?.structuredContent || {};
+    const txt=(result?.content||[]).map(c=>c.text||'').join('\n');
+    const receiptUrl=data?.receipt?.url || (txt.match(/https:\/\/three\.ws\/runs\/[A-Za-z0-9_-]+/)||[])[0];
+    if(receiptUrl){receipt.href=receiptUrl;receipt.style.display='inline';}
+    if(result?.isError || data?.error) {
+      setMcpMessage(data.message || txt || 'MCP üretimi tamamlanamadı.');
+      state.textContent='GENERATION FAILED';
+      return;
+    }
+    if(showMcpModel(data)) {
+      notify('MCP modeli yüklendi. İki modeli ayrı ayrı döndürebilirsin.');
+      return;
+    }
+    let jobId=data.jobId || data.job_id || data.job;
+    if(data.status==='pending' && jobId) {
+      setMcpMessage('Model üretimde. MCP iş durumu kontrol ediliyor…','RENDERING');
+      state.textContent='RENDERING';
+      for(let i=0;i<25;i++){
+        await new Promise(resolve=>setTimeout(resolve,Math.max(5000,Number(data.etaRemainingSeconds||data.etaSeconds||5)*1000)));
+        const polled=await callStudio('tools/call',{name:'check_job',arguments:{job_id:jobId}});
+        const latest=polled?.structuredContent||{};
+        const t=(polled?.content||[]).map(c=>c.text||'').join('\n');
+        const ru=latest?.receipt?.url || (t.match(/https:\/\/three\.ws\/runs\/[A-Za-z0-9_-]+/)||[])[0];
+        if(ru){receipt.href=ru;receipt.style.display='inline';}
+        if(polled?.isError || latest?.error){setMcpMessage(latest.message||t||'MCP üretim işi başarısız.');state.textContent='GENERATION FAILED';return;}
+        if(showMcpModel(latest)) {notify('MCP modeli hazır.');return;}
+        if(latest.status==='pending'){setMcpMessage('Üretim devam ediyor; durum tekrar kontrol edilecek.','RENDERING');continue;}
+      }
+      setMcpMessage('MCP işi zamanında tamamlanmadı. Çalışma bağlantısından durumu kontrol et.','PENDING');
+      return;
+    }
+    setMcpMessage(txt || 'MCP yanıt verdi ancak indirilebilir GLB URL alanı dönmedi.','NO MODEL URL');
+    state.textContent='NO MODEL URL';
+  } catch(error) {
+    const msg=String(error?.message||error);
+    setMcpMessage(msg.includes('Failed to fetch') ? 'Tarayıcı MCP uç noktasına erişemedi (CORS/ağ engeli olabilir). Doğrudan MCP denemelerimizde üretici de HTTP 503 not_configured döndürdü.' : msg);
+    state.textContent='REQUEST FAILED';
+  } finally {
+    btn.disabled=false;btn.textContent='↻ MCP ile tekrar dene';
+  }
+});
+document.querySelector('#mcpLoad').addEventListener('click',()=>{
+  const input=document.querySelector('#mcpUrl');
+  let url;try{url=new URL(input.value.trim());}catch{notify('Geçerli bir HTTPS GLB URL’si gir.');return;}
+  if(url.protocol!=='https:'){notify('Güvenlik için yalnızca HTTPS URL kabul edilir.');return;}
+  if(!showMcpModel({glbUrl:url.href})){notify('Model URL’si yüklenemedi.');return;}
+  notify('Model karşılaştırma paneline yüklendi.');
+});
+
 function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);}animate();
 loading.classList.add('hidden');
 setTimeout(()=>loading.remove(),650);
