@@ -108,7 +108,7 @@ button:disabled{opacity:.6;cursor:wait}
   <div class="top-right"><span class="live-dot"></span><span>Real-time 3D viewport</span></div>
 </header>
 <main>
-  <div id="stage" aria-label="Döndürülebilir üç boyutlu robot modeli"></div><div class="source-label"><span class="source-dot"></span><span>01 / OPENAI CONCEPT · PROCEDURAL 3D</span></div>
+  <div id="stage" aria-label="Döndürülebilir üç boyutlu robot modeli"></div><div class="source-label"><span class="source-dot"></span><span>01 / OUR MODEL · PROCEDURAL 3D</span></div>
   <section class="hud-left">
     <div class="eyebrow">Prototype 07 · Online</div>
     <h1>ATLAS<span>— 07</span></h1>
@@ -124,6 +124,7 @@ button:disabled{opacity:.6;cursor:wait}
   <div class="controls">
     <button id="rotateBtn" aria-pressed="true" title="Otomatik dönüşü aç/kapat">⟳ Otomatik</button>
     <button id="resetBtn" title="Kamera görünümünü sıfırla">⌖ Sıfırla</button>
+    <button id="exportBtn" title="Robot modelini gerçek GLB dosyası olarak dışa aktar">↓ GLB indir</button>
     <button id="lightBtn" class="optional" aria-pressed="true" title="Işık efektlerini değiştir">✦ Işık</button>
     <button id="shotBtn" class="primary" title="Ekran görüntüsünü PNG olarak kaydet">↧ PNG al</button>
   </div>
@@ -162,6 +163,7 @@ button:disabled{opacity:.6;cursor:wait}
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/controls/OrbitControls.js';
+import { GLTFExporter } from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/exporters/GLTFExporter.js';
 
 const stage = document.querySelector('#stage');
 const loading = document.querySelector('#loading');
@@ -405,6 +407,26 @@ document.querySelector('#mcpLoad').addEventListener('click',()=>{
   if(url.protocol!=='https:'){notify('Güvenlik için yalnızca HTTPS URL kabul edilir.');return;}
   if(!showMcpModel({glbUrl:url.href})){notify('Model URL’si yüklenemedi.');return;}
   notify('Model karşılaştırma paneline yüklendi.');
+});
+
+
+document.querySelector('#exportBtn').addEventListener('click',()=>{
+  const btn=document.querySelector('#exportBtn');
+  btn.disabled=true;btn.textContent='◌ GLB hazırlanıyor…';
+  const exporter=new GLTFExporter();
+  exporter.parse(robot, result=>{
+    try {
+      const blob=new Blob([result],{type:'model/gltf-binary'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');a.href=url;a.download='ATLAS-07-procedural.glb';a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1500);
+      notify('ATLAS-07 GLB dosyası indirildi.');
+    } catch(error) { notify('GLB indirilemedi: '+String(error)); }
+    finally {btn.disabled=false;btn.textContent='↓ GLB indir';}
+  },error=>{
+    console.error(error);notify('GLB dışa aktarma başarısız oldu.');
+    btn.disabled=false;btn.textContent='↓ GLB indir';
+  },{binary:true,maxTextureSize:2048});
 });
 
 function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);}animate();
