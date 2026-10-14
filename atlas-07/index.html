@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070b10">
+<meta name="description" content="ATLAS-07 — etkileşimli, tarayıcı tabanlı 3D robot deneyimi.">
+<title>ATLAS-07 — Interactive 3D Robot</title>
+<style>
+:root{color-scheme:dark;--bg:#070b10;--panel:#0d141c;--line:rgba(146,183,205,.17);--text:#eaf4fb;--muted:#8da3b3;--cyan:#5ce8ff;--gold:#ffbd70}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{background:radial-gradient(ellipse at 60% 45%,#132733 0%,#091117 43%,#06090e 100%)}
+#app{height:100%;display:grid;grid-template-rows:auto 1fr auto;position:relative;isolation:isolate}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;z-index:3;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;letter-spacing:.18em;font-size:12px;font-weight:800}
+.brand-mark{width:35px;height:35px;border:1px solid rgba(92,232,255,.55);display:grid;place-items:center;color:var(--cyan);border-radius:10px;box-shadow:inset 0 0 18px #27b9df24,0 0 22px #22d9f522}
+.top-right{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#79ffd3;box-shadow:0 0 12px #79ffd3}
+main{position:relative;min-height:0}
+#stage{position:absolute;inset:0}
+canvas{display:block;width:100%;height:100%;outline:none}
+.hud-left{position:absolute;left:clamp(18px,4vw,56px);top:10%;width:min(280px,36vw);z-index:2;pointer-events:none}
+.eyebrow{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:.26em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.eyebrow:before{content:"";width:23px;height:1px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+h1{font-size:clamp(38px,6vw,76px);letter-spacing:-.065em;line-height:.92;margin:17px 0 15px;font-weight:850}
+h1 span{display:block;color:transparent;-webkit-text-stroke:1px #d2eaf27a}
+.sub{max-width:250px;color:#9eb2c0;line-height:1.7;font-size:13px}
+.spec-card{margin-top:26px;border-left:1px solid #55e5ff88;padding:2px 0 2px 14px;display:grid;gap:7px}
+.spec-title{font-size:9px;color:#6b8797;letter-spacing:.18em;text-transform:uppercase}
+.spec-value{font-size:12px;letter-spacing:.05em}
+.spec-value em{font-style:normal;color:#76f0ff}
+.stat-row{display:flex;gap:18px;margin-top:23px}
+.stat{display:grid;gap:4px}.stat strong{font-size:16px;letter-spacing:-.04em}.stat small{font-size:9px;color:#6f8897;letter-spacing:.13em;text-transform:uppercase}
+.hud-right{position:absolute;right:clamp(18px,4vw,52px);top:15%;z-index:2;width:162px;display:grid;gap:10px}
+.readout{border:1px solid var(--line);background:linear-gradient(135deg,#13212a9c,#0b11189c);padding:13px 14px;backdrop-filter:blur(10px)}
+.readout .label{font-size:9px;color:#7e98a8;letter-spacing:.16em;text-transform:uppercase}.readout .number{font-size:20px;margin-top:7px;letter-spacing:-.04em}.readout .number small{font-size:10px;color:var(--cyan);letter-spacing:.08em;margin-left:4px}
+.meter{height:3px;background:#1d303b;margin-top:10px;overflow:hidden}.meter span{display:block;height:100%;width:88%;background:linear-gradient(90deg,#28afce,#8df5ff);box-shadow:0 0 10px #50e8ff}
+.controls{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #b7e3f326;background:#091018b8;backdrop-filter:blur(18px);border-radius:15px;z-index:4;box-shadow:0 16px 45px #0006}
+button{font:inherit;color:#cfe1ea;background:#14212b;border:1px solid #90b7cb20;border-radius:9px;padding:10px 13px;font-size:11px;white-space:nowrap;cursor:pointer;transition:.2s ease}
+button:hover{border-color:#55e5ff80;color:white;background:#17313a}button.primary{background:#55e5ff;color:#061015;border-color:#55e5ff;font-weight:800}
+button[aria-pressed=true]{border-color:#65eaff88;color:#71eaff}
+footer{z-index:3;display:flex;justify-content:space-between;gap:20px;padding:0 28px 17px;color:#67808e;font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+#loading{position:absolute;inset:0;display:grid;place-items:center;z-index:10;background:#070b10;transition:opacity .45s}
+#loading.hidden{opacity:0;pointer-events:none}.loader-box{text-align:center;color:#a9c5d1;font-size:11px;letter-spacing:.19em}.spinner{width:34px;height:34px;border:1px solid #23414e;border-top-color:var(--cyan);border-radius:50%;margin:0 auto 18px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+#toast{position:absolute;left:50%;top:18px;transform:translate(-50%,-10px);opacity:0;pointer-events:none;background:#0b171f;border:1px solid #5ce8ff55;padding:10px 14px;border-radius:9px;color:#bdecf5;font-size:12px;z-index:8;transition:.25s}#toast.show{transform:translate(-50%,0);opacity:1}
+@media(max-width:760px){header{padding:15px 16px}.top-right{font-size:9px}.hud-left{top:5%;width:210px}.hud-left h1{font-size:43px}.sub{font-size:11px;max-width:185px}.spec-card{margin-top:14px}.stat-row{margin-top:13px}.hud-right{top:auto;bottom:100px;right:12px;width:112px;gap:6px}.readout{padding:9px}.readout .number{font-size:16px}.controls{bottom:18px;gap:5px;padding:6px;max-width:calc(100% - 20px)}button{padding:9px 10px;font-size:10px}.controls .optional{display:none}footer{padding:0 15px 10px;font-size:8px}.hud-left .sub{max-width:160px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js"}}</script>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="brand"><div class="brand-mark">A<span style="font-size:8px">07</span></div><div>ATLAS<span style="color:#6deaff"> / </span>ROBOTICS</div></div>
+  <div class="top-right"><span class="live-dot"></span><span>Real-time 3D viewport</span></div>
+</header>
+<main>
+  <div id="stage" aria-label="Döndürülebilir üç boyutlu robot modeli"></div>
+  <section class="hud-left">
+    <div class="eyebrow">Prototype 07 · Online</div>
+    <h1>ATLAS<span>— 07</span></h1>
+    <div class="sub">Yeni nesil otonom sistemler için tasarlanmış, insan formundan ilham alan robot konsepti.</div>
+    <div class="spec-card"><div class="spec-title">Chassis / platform</div><div class="spec-value">A-07 <em>· TITANIUM CERAMIC</em></div><div class="spec-title" style="margin-top:7px">Interface status</div><div class="spec-value"><em>●</em> All systems nominal</div></div>
+    <div class="stat-row"><div class="stat"><strong>2.14<span style="font-size:10px;color:#63eaff"> m</span></strong><small>Height</small></div><div class="stat"><strong>360<span style="font-size:10px;color:#63eaff">°</span></strong><small>Field view</small></div><div class="stat"><strong>AI<span style="color:#63eaff">/</span>07</strong><small>Core</small></div></div>
+  </section>
+  <aside class="hud-right">
+    <div class="readout"><div class="label">Core temperature</div><div class="number">32.8<small>°C</small></div><div class="meter"><span style="width:34%"></span></div></div>
+    <div class="readout"><div class="label">Power reserve</div><div class="number">98.4<small>%</small></div><div class="meter"><span style="width:98%"></span></div></div>
+    <div class="readout"><div class="label">Optical array</div><div class="number" style="font-size:15px;color:#8cffe0">CONNECTED</div><div class="meter"><span style="width:100%;background:linear-gradient(90deg,#3dc7a0,#8cffe0)"></span></div></div>
+  </aside>
+  <div class="controls">
+    <button id="rotateBtn" aria-pressed="true" title="Otomatik dönüşü aç/kapat">⟳ Otomatik</button>
+    <button id="resetBtn" title="Kamera görünümünü sıfırla">⌖ Sıfırla</button>
+    <button id="lightBtn" class="optional" aria-pressed="true" title="Işık efektlerini değiştir">✦ Işık</button>
+    <button id="shotBtn" class="primary" title="Ekran görüntüsünü PNG olarak kaydet">↧ PNG al</button>
+  </div>
+  <div id="toast" role="status"></div>
+  <div id="loading"><div class="loader-box"><div class="spinner"></div>INITIALIZING 3D CORE</div></div>
+</main>
+<footer><span>ATLAS-07 / Interactive concept</span><span>Drag to orbit · Scroll to zoom</span><span>Built for WebGL</span></footer>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/controls/OrbitControls.js';
+
+const stage = document.querySelector('#stage');
+const loading = document.querySelector('#loading');
+const toast = document.querySelector('#toast');
+let toastTimer;
+function notify(text){toast.textContent=text;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2100);}
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x070b10);
+scene.fog = new THREE.FogExp2(0x070b10,0.035);
+const camera = new THREE.PerspectiveCamera(34,1,0.1,100);
+camera.position.set(6.1,4.35,8.7);
+const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+stage.appendChild(renderer.domElement);
+const controls = new OrbitControls(camera,renderer.domElement);
+controls.target.set(0,2.55,0);
+controls.enableDamping=true;
+controls.dampingFactor=.06;
+controls.minDistance=4.5;
+controls.maxDistance=15;
+controls.maxPolarAngle=Math.PI*.49;
+controls.autoRotate=true;
+controls.autoRotateSpeed=.65;
+scene.add(new THREE.HemisphereLight(0x9edcff,0x15202a,2.0));
+const keyLight=new THREE.DirectionalLight(0xffedda,3.7);keyLight.position.set(5,9,6);keyLight.castShadow=true;keyLight.shadow.mapSize.set(1024,1024);keyLight.shadow.camera.left=-7;keyLight.shadow.camera.right=7;keyLight.shadow.camera.top=8;keyLight.shadow.camera.bottom=-5;scene.add(keyLight);
+const cyanLight=new THREE.PointLight(0x20dfff,42,11,2);cyanLight.position.set(-3,3.1,2);scene.add(cyanLight);
+const goldLight=new THREE.PointLight(0xffa54b,34,10,2);goldLight.position.set(3.5,2.6,-1.5);scene.add(goldLight);
+const rimLight=new THREE.DirectionalLight(0x368dff,2.2);rimLight.position.set(-5,5,-6);scene.add(rimLight);
+
+const mat=(color,metalness,roughness,extra={})=>new THREE.MeshStandardMaterial({color,metalness,roughness,...extra});
+const ceramic=mat(0xe5edf0,.68,.27);
+const white=mat(0xf5f7f2,.38,.25);
+const dark=mat(0x101922,.78,.32);
+const joint=mat(0x273540,.83,.28);
+const silver=mat(0x738a96,.8,.23);
+const cyan=mat(0x55e8ff,.35,.22,{emissive:0x12c5ed,emissiveIntensity:2.6});
+const cyanSoft=mat(0x1da9c6,.5,.3,{emissive:0x08768d,emissiveIntensity:1.2});
+const amber=mat(0xffbd63,.25,.2,{emissive:0xff8b21,emissiveIntensity:2.5});
+const glass=mat(0x06131d,.7,.12,{emissive:0x071d2a,emissiveIntensity:.7});
+const robot=new THREE.Group();scene.add(robot);
+function mesh(geometry,material,parent=robot,pos=[0,0,0],rot=[0,0,0]){const o=new THREE.Mesh(geometry,material);o.position.set(...pos);o.rotation.set(...rot);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
+function box(parent,material,pos,size,rot=[0,0,0],bevelScale=1){const o=mesh(new THREE.BoxGeometry(size[0],size[1],size[2]),material,parent,pos,rot);return o;}
+function ball(parent,material,pos,scale){const o=mesh(new THREE.SphereGeometry(1,24,18),material,parent,pos);o.scale.set(...scale);return o;}
+function cyl(parent,material,pos,r1,r2,h,rot=[0,0,0],seg=20){return mesh(new THREE.CylinderGeometry(r1,r2,h,seg),material,parent,pos,rot);}
+function link(parent,a,b,r,material,r2=r){const p1=new THREE.Vector3(...a),p2=new THREE.Vector3(...b),d=new THREE.Vector3().subVectors(p2,p1);const o=mesh(new THREE.CylinderGeometry(r2,r,d.length(),16),material,parent,p1.clone().add(p2).multiplyScalar(.5).toArray());o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());ball(parent,material,a,[r,r,r]);ball(parent,material,b,[r2,r2,r2]);return o;}
+function panel(parent,pos,size,material=white,rot=[0,0,0]){return box(parent,material,pos,size,rot);}
+function torus(parent,material,pos,r,t,rot=[Math.PI/2,0,0]){return mesh(new THREE.TorusGeometry(r,t,10,96),material,parent,pos,rot);}
+
+// Waist and torso
+box(robot,dark,[0,2.47,0],[.94,.53,.58]);
+box(robot,silver,[0,2.48,.32],[.55,.25,.16]);
+box(robot,ceramic,[0,3.18,0],[1.22,1.22,.68]);
+panel(robot,[0,3.54,.36],[.79,.42,.105],white,[-.06,0,0]);
+panel(robot,[0,3.12,.36],[.69,.29,.11],ceramic);
+panel(robot,[0,2.82,.33],[.54,.13,.12],dark);
+for(let i=0;i<5;i++){panel(robot,[0,2.94+i*.105,.431],[.38-i*.022,.025,.025],i%2?silver:cyanSoft);}
+panel(robot,[-.44,3.45,.405],[.11,.48,.08],silver,[0,0,-.12]);
+panel(robot,[.44,3.45,.405],[.11,.48,.08],silver,[0,0,.12]);
+panel(robot,[0,3.73,.385],[.28,.08,.04],cyan);
+box(robot,dark,[0,2.38,.02],[.67,.24,.49]);
+panel(robot,[0,2.38,.29],[.34,.09,.04],cyanSoft);
+
+// Neck and head assembly
+cyl(robot,joint,[0,4.00,0],.2,.24,.24);
+torus(robot,silver,[0,4.04,0],.2,.035);
+const head=new THREE.Group();robot.add(head);head.position.set(0,4.47,.015);
+box(head,ceramic,[0,0,0],[.77,.69,.62]);
+ball(head,white,[0,.22,-.01],[.39,.2,.33]);
+box(head,dark,[0,-.045,.319],[.61,.27,.055]);
+box(head,glass,[0,-.045,.352],[.53,.205,.025]);
+ball(head,amber,[-.155,-.04,.38],[.058,.058,.027]);
+ball(head,cyan,[.155,-.04,.38],[.058,.058,.027]);
+for(const s of [-1,1]){
+  cyl(head,silver,[s*.405,0,0],.125,.125,.12,[0,0,Math.PI/2]);
+  cyl(head,dark,[s*.47,0,0],.078,.078,.04,[0,0,Math.PI/2]);
+  torus(head,cyanSoft,[s*.497,0,0],.045,.012,[0,Math.PI/2,0]);
+  panel(head,[s*.22,.22,.29],[.09,.07,.06],silver,[0,0,s*-.24]);
+}
+panel(head,[0,-.255,.31],[.23,.075,.04],silver);
+
+// Shoulder and arm structure
+for(const s of [-1,1]){
+  const shoulder=[s*.72,3.73,0],elbow=[s*1.05,3.12,.03],wrist=[s*1.13,2.58,.12],palm=[s*1.14,2.36,.19];
+  ball(robot,joint,shoulder,[.27,.28,.28]);ball(robot,silver,[s*.75,3.75,.11],[.28,.27,.26]);
+  ball(robot,white,[s*.77,3.79,.19],[.24,.27,.19]);
+  panel(robot,[s*.83,3.76,.365],[.3,.24,.09],white,[0,0,-s*.28]);
+  panel(robot,[s*.78,3.55,.22],[.22,.32,.16],ceramic,[0,0,-s*.3]);
+  link(robot,[s*.82,3.62,0],elbow,.155,dark,.12);
+  link(robot,[s*.84,3.61,.12],[s*.91,3.44,.17],.15,ceramic,.12);
+  ball(robot,silver,elbow,[.19,.19,.19]);
+  torus(robot,cyanSoft,[elbow[0],elbow[1],.16],.105,.024,[Math.PI/2,0,0]);
+  link(robot,elbow,wrist,.12,joint,.085);
+  link(robot,[s*1.08,3.0,.14],[s*1.13,2.73,.17],.14,white,.09);
+  panel(robot,[s*1.12,2.92,.235],[.13,.35,.075],ceramic,[0,0,-s*.07]);
+  ball(robot,silver,wrist,[.12,.12,.12]);
+  torus(robot,cyan,[wrist[0],wrist[1],wrist[2]+.06],.09,.014,[Math.PI/2,0,0]);
+  link(robot,wrist,palm,.072,dark,.065);
+  box(robot,ceramic,palm,[.23,.27,.14],[0,0,-s*.03]);
+  panel(robot,[s*1.14,2.36,.27],[.13,.17,.07],white);
+  for(let i=0;i<4;i++){
+    const fx=s*(1.065+i*.05),fy=2.20-(i===0||i===3?.02:0),fz=.20;
+    link(robot,[fx,2.27,fz],[fx+s*.008,fy,fz+.01],.025,silver,.018);
+    ball(robot,dark,[fx+s*.008,fy,fz+.01],[.022,.022,.022]);
+  }
+  link(robot,[s*1.03,2.39,.2],[s*.99,2.31,.25],.03,silver,.023);
+}
+
+// Hip shell and legs
+for(const s of [-1,1]){
+  const x=s*.34;
+  box(robot,dark,[x,2.14,-.005],[.43,.44,.48],[0,0,-s*.06]);
+  box(robot,ceramic,[x,1.68,0],[.48,.77,.48],[0,0,-s*.035]);
+  panel(robot,[x,1.72,.255],[.29,.47,.055],white,[0,0,-s*.04]);
+  panel(robot,[x,1.78,.292],[.11,.31,.025],silver,[0,0,-s*.04]);
+  ball(robot,joint,[x,1.24,0],[.22,.21,.23]);
+  torus(robot,cyanSoft,[x,1.24,.17],.14,.025,[Math.PI/2,0,0]);
+  link(robot,[x,1.15,0],[s*.36,.42,.015],.145,dark,.11);
+  box(robot,ceramic,[s*.36,.76,.05],[.38,.55,.38],[0,0,-s*.015]);
+  panel(robot,[s*.36,.76,.255],[.22,.37,.05],white);
+  panel(robot,[s*.36,.68,.29],[.11,.19,.025],cyanSoft);
+  ball(robot,silver,[s*.36,.35,.03],[.14,.14,.14]);
+  box(robot,dark,[s*.36,.20,.17],[.44,.22,.63]);
+  box(robot,ceramic,[s*.36,.18,.25],[.43,.18,.51]);
+  panel(robot,[s*.36,.28,.45],[.27,.045,.08],cyan,[0,0,0]);
+  panel(robot,[s*.36,.11,.43],[.3,.045,.06],silver);
+}
+
+// Mechanical spine details and shoulder lights
+for(let i=0;i<4;i++){
+  box(robot,i===1?cyanSoft:joint,[0,3.28-i*.18,-.36],[.23,.08,.04]);
+}
+for(const s of [-1,1]){
+  torus(robot,silver,[s*.48,3.06,.05],.10,.025,[Math.PI/2,0,0]);
+  panel(robot,[s*.52,3.04,.2],[.06,.15,.04],cyanSoft,[0,0,s*.16]);
+}
+
+// Studio platform and floor
+cyl(scene,mat(0x0d171e,.72,.34),[0,-.10,0],2.45,2.45,.22, [0,0,0],96);
+torus(scene,cyan,[0,.018,0],2.24,.024);
+torus(scene,silver,[0,.022,0],2.4,.008);
+torus(scene,cyanSoft,[0,.025,0],1.96,.008);
+mesh(new THREE.PlaneGeometry(200,200),mat(0x080e13,.25,.65),scene,[0,-.23,0],[-Math.PI/2,0,0]);
+// radial floor grid: subtle thin lines
+const grid=new THREE.GridHelper(30,60,0x18303b,0x10212a);grid.position.y=-.215;grid.material.transparent=true;grid.material.opacity=.24;scene.add(grid);
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);}
+new ResizeObserver(resize).observe(stage);resize();
+document.querySelector('#rotateBtn').addEventListener('click',e=>{controls.autoRotate=!controls.autoRotate;e.currentTarget.setAttribute('aria-pressed',String(controls.autoRotate));e.currentTarget.textContent=controls.autoRotate?'⟳ Otomatik':'Ⅱ Durdur';});
+document.querySelector('#resetBtn').addEventListener('click',()=>{camera.position.set(6.1,4.35,8.7);controls.target.set(0,2.55,0);controls.update();robot.rotation.y=0;notify('Kamera varsayılan görünüme döndü');});
+document.querySelector('#lightBtn').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',String(on));cyanLight.intensity=on?42:0;goldLight.intensity=on?34:0;rimLight.intensity=on?2.2:.4;e.currentTarget.textContent=on?'✦ Işık':'✧ Işık';notify(on?'Işık efektleri açık':'Işık efektleri azaltıldı');});
+document.querySelector('#shotBtn').addEventListener('click',()=>{renderer.render(scene,camera);const a=document.createElement('a');a.download='ATLAS-07-render.png';a.href=renderer.domElement.toDataURL('image/png');a.click();notify('PNG ekran görüntüsü indirildi');});
+function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);}animate();
+loading.classList.add('hidden');
+setTimeout(()=>loading.remove(),650);
+</script>
+</body>
+</html>
