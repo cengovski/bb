@@ -68,7 +68,7 @@ footer{z-index:3;display:flex;justify-content:space-between;gap:20px;padding:0 2
 #mcpPlaceholder h3{font-size:clamp(19px,2.2vw,29px);letter-spacing:-.045em;line-height:1.04;margin:12px 0;max-width:350px}
 #mcpPlaceholder p{font-size:12px;line-height:1.65;color:#8ea6b5;max-width:390px;margin:0 0 16px}
 #mcpReceipt{color:#70e7fa;font-size:11px;text-decoration:none;border-bottom:1px solid #70e7fa42;padding-bottom:3px}
-.mcp-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mcp-links{display:flex;flex-wrap:wrap;gap:14px;align-items:center}.mcp-links a{color:#70e7fa;font-size:11px;text-decoration:none;border-bottom:1px solid #70e7fa42;padding-bottom:3px}.mcp-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .mcp-actions button{font-size:11px}
 .mcp-actions a{color:#70e7fa;font-size:11px;text-decoration:none}
 .manual-load{border-top:1px solid var(--line);padding-top:11px;display:grid;gap:8px}
@@ -132,16 +132,16 @@ button:disabled{opacity:.6;cursor:wait}
   <section id="mcpPanel" aria-label="MCP model karşılaştırması">
     <div class="mcp-head">
       <div><div class="mcp-kicker">MODEL COMPARISON / 02</div><h2>MCP OUTPUT</h2></div>
-      <span id="mcpState" class="mcp-state">503 · NOT_CONFIGURED</span>
+      <span id="mcpState" class="mcp-state">R2 · STORAGE DOWN</span>
     </div>
     <div id="mcpModelStage">
       <model-viewer id="mcpViewer" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" environment-image="neutral" interaction-prompt="none" alt="three.ws MCP tarafından üretilen ATLAS-07 modeli" style="display:none"></model-viewer>
       <div id="mcpPlaceholder">
         <div class="placeholder-icon"><span></span><span></span><span></span><span></span></div>
-        <div class="placeholder-status">MODEL NOT DELIVERED</div>
-        <h3>MCP üretimi şu an kullanılamıyor</h3>
-        <p id="mcpMessage">Canlı REST çağrısı HTTP 503 · not_configured döndürdü. MCP uç noktası yanıt veriyor, ancak bu deployment’da üretici yapılandırılmamış.</p>
-        <a id="mcpReceipt" href="https://three.ws/runs/rr_UvSTGcufNas4s5B4HefjsQ" target="_blank" rel="noopener noreferrer">MCP çalışma raporunu aç ↗</a>
+        <div class="placeholder-status">MESH STAGE · FAILED</div>
+        <h3>MCP modeli üretilemedi</h3>
+        <p id="mcpMessage">İmzalı run receipt doğrulandı: Input ve Brief geçti, Mesh aşaması başarısız oldu. Belgelenmiş ücretsiz REST yolu da 502 lane_error ve “Please enable R2 through the Cloudflare Dashboard” döndürdü. three.ws durum sayfası R2 yazma/teslim altyapısını arızalı gösteriyor. Bu, prompt hatası değil; yeni denemeler R2 düzelene kadar başarısız olabilir.</p>
+        <div class="mcp-links"><a id="mcpReceipt" href="https://three.ws/runs/rr_UvSTGcufNas4s5B4HefjsQ" target="_blank" rel="noopener noreferrer">İmzalı makbuzu aç ↗</a><a id="mcpStatus" href="https://three.ws/status" target="_blank" rel="noopener noreferrer">Canlı servis durumu ↗</a></div>
       </div>
     </div>
     <div class="mcp-actions">
