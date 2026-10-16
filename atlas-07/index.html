@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#070b10">
-<meta name="description" content="ATLAS-07 — etkileşimli, tarayıcı tabanlı 3D robot deneyimi.">
-<title>ATLAS-07 — Interactive 3D Robot</title>
+<meta name="description" content="AETHER-01 — görselden esinlenilmiş, etkileşimli 3B uçan araç konsepti.">
+<title>AETHER-01 — Interactive 3D Flight Concept</title>
 <style>
 :root{color-scheme:dark;--bg:#070b10;--panel:#0d141c;--line:rgba(146,183,205,.17);--text:#eaf4fb;--muted:#8da3b3;--cyan:#5ce8ff;--gold:#ffbd70}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -104,17 +104,17 @@ button:disabled{opacity:.6;cursor:wait}
 <body>
 <div id="app">
 <header>
-  <div class="brand"><div class="brand-mark">A<span style="font-size:8px">07</span></div><div>ATLAS<span style="color:#6deaff"> / </span>ROBOTICS</div></div>
+  <div class="brand"><div class="brand-mark">A<span style="font-size:8px">01</span></div><div>AETHER<span style="color:#6deaff"> / </span>FLIGHT SYSTEMS</div></div>
   <div class="top-right"><span class="live-dot"></span><span>Real-time 3D viewport</span></div>
 </header>
 <main>
-  <div id="stage" aria-label="Döndürülebilir üç boyutlu robot modeli"></div><div class="source-label"><span class="source-dot"></span><span>01 / OUR MODEL · PROCEDURAL 3D</span></div>
+  <div id="stage" aria-label="Döndürülebilir üç boyutlu uçan araç konsepti"></div><div class="source-label"><span class="source-dot"></span><span>01 / IMAGE-INSPIRED · PROCEDURAL 3D</span></div>
   <section class="hud-left">
-    <div class="eyebrow">Prototype 07 · Online</div>
-    <h1>ATLAS<span>— 07</span></h1>
-    <div class="sub">Yeni nesil otonom sistemler için tasarlanmış, insan formundan ilham alan robot konsepti.</div>
-    <div class="spec-card"><div class="spec-title">Chassis / platform</div><div class="spec-value">A-07 <em>· TITANIUM CERAMIC</em></div><div class="spec-title" style="margin-top:7px">Interface status</div><div class="spec-value"><em>●</em> All systems nominal</div></div>
-    <div class="stat-row"><div class="stat"><strong>2.14<span style="font-size:10px;color:#63eaff"> m</span></strong><small>Height</small></div><div class="stat"><strong>360<span style="font-size:10px;color:#63eaff">°</span></strong><small>Field view</small></div><div class="stat"><strong>AI<span style="color:#63eaff">/</span>07</strong><small>Core</small></div></div>
+    <div class="eyebrow">Concept vehicle · 01</div>
+    <h1>AETHER<span>— 01</span></h1>
+    <div class="sub">Paylaşılan görselden esinlenilen metalik uçan araç konsepti. Panoramik kırmızı kokpit, kuyruk kanadı ve dikey itki motorlarıyla prosedürel 3B geometri olarak oluşturuldu.</div>
+    <div class="spec-card"><div class="spec-title">Airframe / structure</div><div class="spec-value">A-01 <em>· TITANIUM / GLASS</em></div><div class="spec-title" style="margin-top:7px">Model source</div><div class="spec-value"><em>●</em> Procedural 3D geometry</div></div>
+    <div class="stat-row"><div class="stat"><strong>360<span style="font-size:10px;color:#63eaff">°</span></strong><small>Orbit view</small></div><div class="stat"><strong>GLB</strong><small>Export</small></div><div class="stat"><strong>3D<span style="color:#63eaff">/</span>01</strong><small>Concept</small></div></div>
   </section>
   <aside class="hud-right">
     <div class="readout"><div class="label">Core temperature</div><div class="number">32.8<small>°C</small></div><div class="meter"><span style="width:34%"></span></div></div>
@@ -124,7 +124,7 @@ button:disabled{opacity:.6;cursor:wait}
   <div class="controls">
     <button id="rotateBtn" aria-pressed="true" title="Otomatik dönüşü aç/kapat">⟳ Otomatik</button>
     <button id="resetBtn" title="Kamera görünümünü sıfırla">⌖ Sıfırla</button>
-    <button id="exportBtn" title="Robot modelini gerçek GLB dosyası olarak dışa aktar">↓ GLB indir</button>
+    <button id="exportBtn" title="3B araç modelini GLB dosyası olarak dışa aktar">↓ GLB indir</button>
     <button id="lightBtn" class="optional" aria-pressed="true" title="Işık efektlerini değiştir">✦ Işık</button>
     <button id="shotBtn" class="primary" title="Ekran görüntüsünü PNG olarak kaydet">↧ PNG al</button>
   </div>
@@ -135,12 +135,12 @@ button:disabled{opacity:.6;cursor:wait}
       <span id="mcpState" class="mcp-state">R2 · STORAGE DOWN</span>
     </div>
     <div id="mcpModelStage">
-      <model-viewer id="mcpViewer" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" environment-image="neutral" interaction-prompt="none" alt="three.ws MCP tarafından üretilen ATLAS-07 modeli" style="display:none"></model-viewer>
+      <model-viewer id="mcpViewer" camera-controls auto-rotate shadow-intensity="1" exposure="1.05" environment-image="neutral" interaction-prompt="none" alt="three.ws MCP tarafından üretilen AETHER-01 uçan araç modeli" style="display:none"></model-viewer>
       <div id="mcpPlaceholder">
         <div class="placeholder-icon"><span></span><span></span><span></span><span></span></div>
         <div class="placeholder-status">MESH STAGE · FAILED</div>
         <h3>MCP modeli üretilemedi</h3>
-        <p id="mcpMessage">İmzalı run receipt doğrulandı: Input ve Brief geçti, Mesh aşaması başarısız oldu. Belgelenmiş ücretsiz REST yolu da 502 lane_error ve “Please enable R2 through the Cloudflare Dashboard” döndürdü. three.ws durum sayfası R2 yazma/teslim altyapısını arızalı gösteriyor. Bu, prompt hatası değil; yeni denemeler R2 düzelene kadar başarısız olabilir.</p>
+        <p id="mcpMessage">Önceki MCP testlerinde three.ws üretim/GLB teslim katmanı R2 ve HTTP 503/502 hataları döndürdü. Soldaki AETHER-01 modeli görselden esinlenerek bu sitede prosedürel 3B geometriyle oluşturuldu; sağdaki panel aynı araç konseptinin MCP çıktısını bekler. Altyapı hatası sürerse yeni MCP denemeleri başarısız olabilir.</p>
         <div class="mcp-links"><a id="mcpReceipt" href="https://three.ws/runs/rr_UvSTGcufNas4s5B4HefjsQ" target="_blank" rel="noopener noreferrer">İmzalı makbuzu aç ↗</a><a id="mcpStatus" href="https://three.ws/status" target="_blank" rel="noopener noreferrer">Canlı servis durumu ↗</a></div>
       </div>
     </div>
@@ -158,7 +158,7 @@ button:disabled{opacity:.6;cursor:wait}
   <div id="toast" role="status"></div>
   <div id="loading"><div class="loader-box"><div class="spinner"></div>INITIALIZING 3D CORE</div></div>
 </main>
-<footer><span>ATLAS-07 / Interactive concept</span><span>Drag to orbit · Scroll to zoom</span><span>Built for WebGL</span></footer>
+<footer><span>AETHER-01 / Flight concept</span><span>Drag to orbit · Scroll to zoom</span><span>WebGL · GLB export</span></footer>
 </div>
 <script type="module">
 import * as THREE from 'three';
@@ -174,7 +174,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x070b10);
 scene.fog = new THREE.FogExp2(0x070b10,0.035);
 const camera = new THREE.PerspectiveCamera(34,1,0.1,100);
-camera.position.set(6.1,4.35,8.7);
+camera.position.set(9.3,6.0,12.2);
 const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -184,11 +184,11 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 stage.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera,renderer.domElement);
-controls.target.set(0,2.55,0);
+controls.target.set(0,1.35,0);
 controls.enableDamping=true;
 controls.dampingFactor=.06;
-controls.minDistance=4.5;
-controls.maxDistance=15;
+controls.minDistance=5.4;
+controls.maxDistance=22;
 controls.maxPolarAngle=Math.PI*.49;
 controls.autoRotate=true;
 controls.autoRotateSpeed=.65;
@@ -217,93 +217,40 @@ function link(parent,a,b,r,material,r2=r){const p1=new THREE.Vector3(...a),p2=ne
 function panel(parent,pos,size,material=white,rot=[0,0,0]){return box(parent,material,pos,size,rot);}
 function torus(parent,material,pos,r,t,rot=[Math.PI/2,0,0]){return mesh(new THREE.TorusGeometry(r,t,10,96),material,parent,pos,rot);}
 
-// Waist and torso
-box(robot,dark,[0,2.47,0],[.94,.53,.58]);
-box(robot,silver,[0,2.48,.32],[.55,.25,.16]);
-box(robot,ceramic,[0,3.18,0],[1.22,1.22,.68]);
-panel(robot,[0,3.54,.36],[.79,.42,.105],white,[-.06,0,0]);
-panel(robot,[0,3.12,.36],[.69,.29,.11],ceramic);
-panel(robot,[0,2.82,.33],[.54,.13,.12],dark);
-for(let i=0;i<5;i++){panel(robot,[0,2.94+i*.105,.431],[.38-i*.022,.025,.025],i%2?silver:cyanSoft);}
-panel(robot,[-.44,3.45,.405],[.11,.48,.08],silver,[0,0,-.12]);
-panel(robot,[.44,3.45,.405],[.11,.48,.08],silver,[0,0,.12]);
-panel(robot,[0,3.73,.385],[.28,.08,.04],cyan);
-box(robot,dark,[0,2.38,.02],[.67,.24,.49]);
-panel(robot,[0,2.38,.29],[.34,.09,.04],cyanSoft);
-
-// Neck and head assembly
-cyl(robot,joint,[0,4.00,0],.2,.24,.24);
-torus(robot,silver,[0,4.04,0],.2,.035);
-const head=new THREE.Group();robot.add(head);head.position.set(0,4.47,.015);
-box(head,ceramic,[0,0,0],[.77,.69,.62]);
-ball(head,white,[0,.22,-.01],[.39,.2,.33]);
-box(head,dark,[0,-.045,.319],[.61,.27,.055]);
-box(head,glass,[0,-.045,.352],[.53,.205,.025]);
-ball(head,amber,[-.155,-.04,.38],[.058,.058,.027]);
-ball(head,cyan,[.155,-.04,.38],[.058,.058,.027]);
-for(const s of [-1,1]){
-  cyl(head,silver,[s*.405,0,0],.125,.125,.12,[0,0,Math.PI/2]);
-  cyl(head,dark,[s*.47,0,0],.078,.078,.04,[0,0,Math.PI/2]);
-  torus(head,cyanSoft,[s*.497,0,0],.045,.012,[0,Math.PI/2,0]);
-  panel(head,[s*.22,.22,.29],[.09,.07,.06],silver,[0,0,s*-.24]);
+// AETHER-01 — image-inspired procedural flying vehicle
+function smoothHull(parent,material,stations,segments=32){
+ const v=[],idx=[];for(let i=0;i<stations.length;i++){const[x,w,y,h]=stations[i];for(let j=0;j<segments;j++){const t=2*Math.PI*j/segments;v.push(x,y+h*Math.cos(t),w*Math.sin(t));}}
+ for(let i=0;i<stations.length-1;i++)for(let j=0;j<segments;j++){const a=i*segments+j,b=i*segments+(j+1)%segments,c=(i+1)*segments+j,d=(i+1)*segments+(j+1)%segments;idx.push(a,b,c,b,d,c);}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setIndex(idx);g.computeVertexNormals();return mesh(g,material,parent);
 }
-panel(head,[0,-.255,.31],[.23,.075,.04],silver);
-
-// Shoulder and arm structure
-for(const s of [-1,1]){
-  const shoulder=[s*.72,3.73,0],elbow=[s*1.05,3.12,.03],wrist=[s*1.13,2.58,.12],palm=[s*1.14,2.36,.19];
-  ball(robot,joint,shoulder,[.27,.28,.28]);ball(robot,silver,[s*.75,3.75,.11],[.28,.27,.26]);
-  ball(robot,white,[s*.77,3.79,.19],[.24,.27,.19]);
-  panel(robot,[s*.83,3.76,.365],[.3,.24,.09],white,[0,0,-s*.28]);
-  panel(robot,[s*.78,3.55,.22],[.22,.32,.16],ceramic,[0,0,-s*.3]);
-  link(robot,[s*.82,3.62,0],elbow,.155,dark,.12);
-  link(robot,[s*.84,3.61,.12],[s*.91,3.44,.17],.15,ceramic,.12);
-  ball(robot,silver,elbow,[.19,.19,.19]);
-  torus(robot,cyanSoft,[elbow[0],elbow[1],.16],.105,.024,[Math.PI/2,0,0]);
-  link(robot,elbow,wrist,.12,joint,.085);
-  link(robot,[s*1.08,3.0,.14],[s*1.13,2.73,.17],.14,white,.09);
-  panel(robot,[s*1.12,2.92,.235],[.13,.35,.075],ceramic,[0,0,-s*.07]);
-  ball(robot,silver,wrist,[.12,.12,.12]);
-  torus(robot,cyan,[wrist[0],wrist[1],wrist[2]+.06],.09,.014,[Math.PI/2,0,0]);
-  link(robot,wrist,palm,.072,dark,.065);
-  box(robot,ceramic,palm,[.23,.27,.14],[0,0,-s*.03]);
-  panel(robot,[s*1.14,2.36,.27],[.13,.17,.07],white);
-  for(let i=0;i<4;i++){
-    const fx=s*(1.065+i*.05),fy=2.20-(i===0||i===3?.02:0),fz=.20;
-    link(robot,[fx,2.27,fz],[fx+s*.008,fy,fz+.01],.025,silver,.018);
-    ball(robot,dark,[fx+s*.008,fy,fz+.01],[.022,.022,.022]);
-  }
-  link(robot,[s*1.03,2.39,.2],[s*.99,2.31,.25],.03,silver,.023);
+const hullSilver=mat(0x77828a,.9,.19),hullDark=mat(0x111820,.84,.22),hullEdge=mat(0xb8c1c6,.82,.18);
+const redGlass=new THREE.MeshPhysicalMaterial({color:0x8b0916,metalness:.2,roughness:.08,transparent:true,opacity:.5,side:THREE.DoubleSide,emissive:0x52000a,emissiveIntensity:.55,clearcoat:1});
+const blackGlass=new THREE.MeshPhysicalMaterial({color:0x071018,metalness:.6,roughness:.1,transparent:true,opacity:.78,side:THREE.DoubleSide,clearcoat:1});
+const flameMat=new THREE.MeshBasicMaterial({color:0x67dfff,transparent:true,opacity:.82,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+const flameCore=mat(0xeafcff,.05,.15,{emissive:0x73ddff,emissiveIntensity:3.5});
+const craft=new THREE.Group();robot.add(craft);
+smoothHull(craft,hullSilver,[[-4.05,.03,.88,.06],[-3.72,.72,.88,.37],[-3.2,1.12,.86,.52],[-2.45,1.48,.83,.62],[-1.35,1.58,.79,.63],[-.15,1.43,.75,.57],[1.25,1.18,.69,.49],[2.38,.91,.61,.40],[3.35,.59,.53,.29],[4.02,.24,.48,.17],[4.28,.025,.46,.035]]);
+ball(craft,hullDark,[-.05,.47,0],[3.45,.28,1.22]);ball(craft,hullEdge,[2.62,.67,0],[1.45,.19,.79]);ball(craft,hullDark,[-.75,.39,0],[2.12,.2,.92]);
+for(const sign of [-1,1]){
+ mesh(new THREE.BoxGeometry(5.4,.075,.075),hullEdge,craft,[.05,.73,sign*1.27],[0,0,-.025]);mesh(new THREE.BoxGeometry(3.8,.055,.06),cyanSoft,craft,[-.15,.50,sign*1.18],[0,0,-.02]);
+ const ws=new THREE.Shape();ws.moveTo(-3,.72*sign);ws.lineTo(-2.08,1.72*sign);ws.lineTo(-.42,1.70*sign);ws.lineTo(1.22,1.27*sign);ws.lineTo(2.6,.36*sign);ws.lineTo(1.12,.61*sign);ws.lineTo(-.72,.78*sign);ws.closePath();
+ mesh(new THREE.ExtrudeGeometry(ws,{depth:.08,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.02,bevelThickness:.015}),hullSilver,craft,[0,.84,0],[Math.PI/2,0,0]);
+ cyl(craft,hullDark,[-3.02,.79,sign*.78],.34,.31,1.06,[0,0,Math.PI/2],40);cyl(craft,silver,[-3.18,.79,sign*.78],.29,.29,.2,[0,0,Math.PI/2],40);torus(craft,cyanSoft,[-3.57,.79,sign*.78],.245,.035,[0,Math.PI/2,0]);ball(craft,cyan,[-3.585,.79,sign*.78],[.055,.20,.20]);
+ mesh(new THREE.BoxGeometry(3.65,.028,.026),amber,craft,[-.44,1.18,sign*1.04],[0,0,.025]);
 }
-
-// Hip shell and legs
-for(const s of [-1,1]){
-  const x=s*.34;
-  box(robot,dark,[x,2.14,-.005],[.43,.44,.48],[0,0,-s*.06]);
-  box(robot,ceramic,[x,1.68,0],[.48,.77,.48],[0,0,-s*.035]);
-  panel(robot,[x,1.72,.255],[.29,.47,.055],white,[0,0,-s*.04]);
-  panel(robot,[x,1.78,.292],[.11,.31,.025],silver,[0,0,-s*.04]);
-  ball(robot,joint,[x,1.24,0],[.22,.21,.23]);
-  torus(robot,cyanSoft,[x,1.24,.17],.14,.025,[Math.PI/2,0,0]);
-  link(robot,[x,1.15,0],[s*.36,.42,.015],.145,dark,.11);
-  box(robot,ceramic,[s*.36,.76,.05],[.38,.55,.38],[0,0,-s*.015]);
-  panel(robot,[s*.36,.76,.255],[.22,.37,.05],white);
-  panel(robot,[s*.36,.68,.29],[.11,.19,.025],cyanSoft);
-  ball(robot,silver,[s*.36,.35,.03],[.14,.14,.14]);
-  box(robot,dark,[s*.36,.20,.17],[.44,.22,.63]);
-  box(robot,ceramic,[s*.36,.18,.25],[.43,.18,.51]);
-  panel(robot,[s*.36,.28,.45],[.27,.045,.08],cyan,[0,0,0]);
-  panel(robot,[s*.36,.11,.43],[.3,.045,.06],silver);
-}
-
-// Mechanical spine details and shoulder lights
-for(let i=0;i<4;i++){
-  box(robot,i===1?cyanSoft:joint,[0,3.28-i*.18,-.36],[.23,.08,.04]);
-}
-for(const s of [-1,1]){
-  torus(robot,silver,[s*.48,3.06,.05],.10,.025,[Math.PI/2,0,0]);
-  panel(robot,[s*.52,3.04,.2],[.06,.15,.04],cyanSoft,[0,0,s*.16]);
-}
+const fin=new THREE.Shape();fin.moveTo(-3.50,1.03);fin.lineTo(-3.73,2.91);fin.quadraticCurveTo(-3.72,3.08,-3.52,3.10);fin.lineTo(-2.54,3.04);fin.quadraticCurveTo(-2.37,3.01,-2.28,2.89);fin.lineTo(-1.53,2.03);fin.lineTo(-1.88,1.25);fin.closePath();
+mesh(new THREE.ExtrudeGeometry(fin,{depth:.13,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.035,bevelThickness:.025}),hullDark,craft,[0,0,-.065]);
+mesh(new THREE.BoxGeometry(1.08,.038,.17),hullEdge,craft,[-2.74,3.03,0],[0,0,-.03]);
+const brandCanvas=document.createElement('canvas');brandCanvas.width=1024;brandCanvas.height=256;const ctx=brandCanvas.getContext('2d');ctx.fillStyle='#eff5f8';ctx.font='800 132px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('SPACEX',512,132);
+const brandTexture=new THREE.CanvasTexture(brandCanvas);brandTexture.colorSpace=THREE.SRGBColorSpace;const brandMat=new THREE.MeshBasicMaterial({map:brandTexture,transparent:true,side:THREE.DoubleSide,depthWrite:false});mesh(new THREE.PlaneGeometry(1.02,.255),brandMat,craft,[-2.83,2.55,.074]);
+ball(craft,hullDark,[-.54,1.08,0],[2.22,.60,1.30]);
+const inner=mesh(new THREE.SphereGeometry(1,48,32,0,Math.PI*2,0,Math.PI/2),blackGlass,craft,[-.55,1.14,0]);inner.scale.set(2.11,.98,1.24);
+const canopy=mesh(new THREE.SphereGeometry(1,64,40,0,Math.PI*2,0,Math.PI/2),redGlass,craft,[-.58,1.16,0]);canopy.scale.set(2.28,1.12,1.36);
+const rim=torus(craft,hullEdge,[-.58,1.13,0],1.32,.035,[Math.PI/2,0,0]);rim.scale.set(1.72,1,.98);mesh(new THREE.BoxGeometry(.08,.08,2.18),hullDark,craft,[1.17,1.19,0],[0,0,-.1]);
+for(const sign of [-1,1]){const z=sign*.49;box(craft,white,[-.95,1.38,z],[.64,.46,.12],[0,0,-.08]);ball(craft,white,[-.72,1.22,z],[.40,.14,.24]);box(craft,dark,[-.39,1.45,z],[.42,.45,.30],[0,0,-.12]);ball(craft,dark,[-.28,1.79,z],[.205,.245,.20]);box(craft,blackGlass,[-.13,1.81,z+sign*.155],[.22,.065,.025]);box(craft,hullDark,[.48,1.18,z],[.39,.13,.34]);panel(craft,[.49,1.255,z+sign*.02],[.28,.018,.21],cyanSoft);}
+mesh(new THREE.BoxGeometry(.07,.065,1.34),white,craft,[3.72,.56,0],[0,0,-.035]);mesh(new THREE.BoxGeometry(.035,.03,1.06),cyan,craft,[3.755,.55,0]);
+for(const[x,z,r]of[[-2.05,-.70,.29],[-2.05,.70,.29],[-.15,0,.34],[1.30,-.57,.25],[1.30,.57,.25]]){cyl(craft,hullDark,[x,.36,z],r,r*.82,.30,[0,0,0],36);torus(craft,silver,[x,.205,z],r*.80,.035,[Math.PI/2,0,0]);mesh(new THREE.ConeGeometry(r*.76,.84,32,1,true),flameMat,craft,[x,-.25,z],[Math.PI,0,0]);mesh(new THREE.ConeGeometry(r*.43,.64,24,1,true),flameCore,craft,[x,-.15,z],[Math.PI,0,0]);ball(craft,cyan,[x,.045,z],[r*.35,.09,r*.35]);}
+box(craft,hullDark,[-2.45,.91,0],[1,.17,1.54],[0,0,.015]);for(let i=0;i<6;i++)box(craft,silver,[-2.77+i*.15,1.01,0],[.035,.025,1.18]);for(const sign of [-1,1]){torus(craft,cyanSoft,[-2.22,.95,sign*.97],.105,.018,[Math.PI/2,0,0]);ball(craft,sign>0?amber:cyan,[.84,.76,sign*1.13],[.055,.055,.055]);}
 
 // Studio platform and floor
 cyl(scene,mat(0x0d171e,.72,.34),[0,-.10,0],2.45,2.45,.22, [0,0,0],96);
@@ -316,7 +263,7 @@ const grid=new THREE.GridHelper(30,60,0x18303b,0x10212a);grid.position.y=-.215;g
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);}
 new ResizeObserver(resize).observe(stage);resize();
 document.querySelector('#rotateBtn').addEventListener('click',e=>{controls.autoRotate=!controls.autoRotate;e.currentTarget.setAttribute('aria-pressed',String(controls.autoRotate));e.currentTarget.textContent=controls.autoRotate?'⟳ Otomatik':'Ⅱ Durdur';});
-document.querySelector('#resetBtn').addEventListener('click',()=>{camera.position.set(6.1,4.35,8.7);controls.target.set(0,2.55,0);controls.update();robot.rotation.y=0;notify('Kamera varsayılan görünüme döndü');});
+document.querySelector('#resetBtn').addEventListener('click',()=>{camera.position.set(9.3,6.0,12.2);controls.target.set(0,1.35,0);controls.update();robot.rotation.y=0;notify('Kamera varsayılan görünüme döndü');});
 document.querySelector('#lightBtn').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true';e.currentTarget.setAttribute('aria-pressed',String(on));cyanLight.intensity=on?42:0;goldLight.intensity=on?34:0;rimLight.intensity=on?2.2:.4;e.currentTarget.textContent=on?'✦ Işık':'✧ Işık';notify(on?'Işık efektleri açık':'Işık efektleri azaltıldı');});
 document.querySelector('#shotBtn').addEventListener('click',()=>{renderer.render(scene,camera);const a=document.createElement('a');a.download='ATLAS-07-render.png';a.href=renderer.domElement.toDataURL('image/png');a.click();notify('PNG ekran görüntüsü indirildi');});
 
@@ -358,7 +305,7 @@ document.querySelector('#mcpRetry').addEventListener('click',async()=>{
     const result=await callStudio('tools/call',{name:'forge_free',arguments:{
       tier:'standard',
       idempotency_key:'atlas07-web-'+Date.now(),
-      prompt:'ATLAS-07 full-body futuristic humanoid robot figurine, pearl-white ceramic titanium armor, graphite-black exposed mechanical joints, cyan luminous strips, amber optical eyes, articulated hands and feet, realistic premium sci-fi industrial design, upright neutral pose, single centered character, no text, no weapons.'
+      prompt:'AETHER-01 futuristic flying roadster spacecraft, dark titanium silver aerodynamic elongated hull, pointed nose with thin white LED strip, panoramic translucent crimson bubble canopy over two white cockpit seats, tall black rear stabilizer fin, swept side wings, rear cylindrical engine pods and downward blue-white lift jets, premium realistic sci-fi industrial design, single centered isolated vehicle, three-quarter view, no extra objects.'
     }});
     const data=result?.structuredContent || {};
     const txt=(result?.content||[]).map(c=>c.text||'').join('\n');
@@ -370,7 +317,7 @@ document.querySelector('#mcpRetry').addEventListener('click',async()=>{
       return;
     }
     if(showMcpModel(data)) {
-      notify('MCP modeli yüklendi. İki modeli ayrı ayrı döndürebilirsin.');
+      notify('MCP modeli yüklendi. Araç modellerini karşılaştırabilirsin.');
       return;
     }
     let jobId=data.jobId || data.job_id || data.job;
@@ -385,7 +332,7 @@ document.querySelector('#mcpRetry').addEventListener('click',async()=>{
         const ru=latest?.receipt?.url || (t.match(/https:\/\/three\.ws\/runs\/[A-Za-z0-9_-]+/)||[])[0];
         if(ru){receipt.href=ru;receipt.style.display='inline';}
         if(polled?.isError || latest?.error){setMcpMessage(latest.message||t||'MCP üretim işi başarısız.');state.textContent='GENERATION FAILED';return;}
-        if(showMcpModel(latest)) {notify('MCP modeli hazır.');return;}
+        if(showMcpModel(latest)) {notify('MCP aracı hazır.');return;}
         if(latest.status==='pending'){setMcpMessage('Üretim devam ediyor; durum tekrar kontrol edilecek.','RENDERING');continue;}
       }
       setMcpMessage('MCP işi zamanında tamamlanmadı. Çalışma bağlantısından durumu kontrol et.','PENDING');
@@ -406,7 +353,7 @@ document.querySelector('#mcpLoad').addEventListener('click',()=>{
   let url;try{url=new URL(input.value.trim());}catch{notify('Geçerli bir HTTPS GLB URL’si gir.');return;}
   if(url.protocol!=='https:'){notify('Güvenlik için yalnızca HTTPS URL kabul edilir.');return;}
   if(!showMcpModel({glbUrl:url.href})){notify('Model URL’si yüklenemedi.');return;}
-  notify('Model karşılaştırma paneline yüklendi.');
+  notify('3B araç karşılaştırma paneline yüklendi.');
 });
 
 
@@ -418,9 +365,9 @@ document.querySelector('#exportBtn').addEventListener('click',()=>{
     try {
       const blob=new Blob([result],{type:'model/gltf-binary'});
       const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');a.href=url;a.download='ATLAS-07-procedural.glb';a.click();
+      const a=document.createElement('a');a.href=url;a.download='AETHER-01-procedural.glb';a.click();
       setTimeout(()=>URL.revokeObjectURL(url),1500);
-      notify('ATLAS-07 GLB dosyası indirildi.');
+      notify('AETHER-01 GLB dosyası indirildi.');
     } catch(error) { notify('GLB indirilemedi: '+String(error)); }
     finally {btn.disabled=false;btn.textContent='↓ GLB indir';}
   },error=>{
